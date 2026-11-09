@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>护眼循环闹钟 · 可点击原型</title>
+<title>护眼循环闹钟</title>
 <style>
   :root {
     --primary-color: #3FA98F;
@@ -40,59 +40,15 @@
   button { font-family: var(--font); cursor: pointer; }
   button:focus-visible { outline: 2px solid var(--primary-deep); outline-offset: 2px; }
 
-  /* ===== 顶部栏 ===== */
-  .top-bar {
-    position: fixed; top: 0; left: 0; right: 0; height: 56px; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 24px;
-    background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  }
-  .top-bar .title { font-size: 16px; font-weight: 600; }
-  .top-bar .tag {
-    font-size: 12px; font-weight: 500; color: var(--accent-ink);
-    background: var(--primary-light); border-radius: 999px; padding: 4px 12px;
-  }
-
   /* ===== 主布局 ===== */
   .stage {
     display: flex; justify-content: center; align-items: flex-start;
-    gap: 56px; padding: 88px 32px 48px;
+    padding: 48px 32px;
   }
   .phone-stage { flex: 0 0 auto; }
-  .side-panel { width: 360px; display: flex; flex-direction: column; gap: 16px; }
   @media (max-width: 960px) {
-    .stage { flex-direction: column; align-items: center; padding: 80px 16px 40px; }
-    .side-panel { width: 100%; max-width: 420px; }
+    .stage { padding: 32px 16px; }
   }
-
-  .panel-card {
-    background: var(--bg-secondary); border: 1px solid var(--border-color);
-    border-radius: var(--card-radius); padding: 18px 20px;
-    box-shadow: var(--card-shadow);
-  }
-  .panel-card h2 { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
-  .flow-row { display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid var(--border-color); }
-  .flow-row:first-of-type { border-top: none; }
-  .flow-badge {
-    flex: 0 0 auto; align-self: flex-start; font-size: 11px; font-weight: 700;
-    color: var(--accent-ink); background: var(--primary-light);
-    border-radius: 8px; padding: 4px 8px; white-space: nowrap;
-  }
-  .flow-text { font-size: 12.5px; line-height: 1.65; color: var(--text-muted); }
-  .flow-text b { color: var(--text-main); font-weight: 600; }
-
-  .demo-row { display: flex; flex-wrap: wrap; gap: 8px; }
-  .demo-btn {
-    border: 1px solid var(--border-color); background: var(--app-bg);
-    color: var(--text-main); font-size: 12.5px; font-weight: 500;
-    border-radius: 999px; padding: 7px 14px;
-    transition: all var(--transition-fast);
-  }
-  .demo-btn:hover { border-color: var(--primary-color); color: var(--accent-ink); }
-  .demo-btn.primary { background: var(--primary-light); border-color: transparent; color: var(--accent-ink); }
-  .demo-note { font-size: 11.5px; color: var(--text-faint); line-height: 1.7; margin-top: 10px; }
 
   /* ===== 手机壳 ===== */
   .phone {
@@ -100,7 +56,7 @@
     background: #1C2320; box-shadow: 0 24px 60px rgba(31, 46, 40, 0.28);
     position: relative;
   }
-  .phone.shake { animation: phoneShake 0.45s ease 2; }
+  .phone.shake { animation: phoneShake 0.45s ease infinite; }
   @keyframes phoneShake {
     0%, 100% { transform: translateX(0); }
     20% { transform: translateX(-7px); }
@@ -164,7 +120,7 @@
   }
   .mp-capsule .cap-divider { width: 1px; height: 18px; background: rgba(31, 46, 40, 0.12); }
 
-  .page-body { flex: 1; overflow-y: auto; padding: 6px 22px 40px; }
+  .page-body { flex: 1; overflow-y: auto; padding: 6px 22px 40px; position: relative; }
 
   /* ===== 首页 ===== */
   .hero { padding: 18px 0 24px; text-align: center; }
@@ -207,6 +163,7 @@
     transition: transform var(--transition-fast);
   }
   .btn-primary-lg:active { transform: scale(0.97); }
+  .btn-break { margin: 0 0 20px; }
 
   .stats-card { padding: 18px 20px; }
   .card-title-row { display: flex; justify-content: space-between; align-items: baseline; }
@@ -218,6 +175,60 @@
   .stat-label { margin-top: 3px; font-size: 11.5px; color: var(--text-muted); }
 
   .rule-tip { margin-top: 16px; text-align: center; font-size: 11.5px; color: var(--text-faint); line-height: 1.7; }
+
+  /* ===== 提醒设置入口 ===== */
+  .settings-entry {
+    position: absolute; right: 0; top: 4px; z-index: 3;
+    padding: 5px 14px; border-radius: 999px;
+    background: #FFFFFF; border: 1px solid #E3ECE7;
+    color: var(--text-muted); font-size: 11.5px; font-weight: 500;
+  }
+
+  /* ===== 提醒设置页 ===== */
+  .page.mode-settings { background: #F3F7F5; }
+  .settings-tip { font-size: 12px; color: var(--text-muted); padding: 4px 0 12px; }
+  .settings-card { padding: 2px 18px; }
+  .setting-option {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; padding: 17px 0; text-align: left;
+  }
+  .setting-option-main { display: flex; flex-direction: column; }
+  .setting-option-title { font-size: 14px; font-weight: 600; color: var(--text-main); }
+  .setting-option-desc { margin-top: 4px; font-size: 11.5px; color: var(--text-faint); }
+  .radio-dot {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 1.5px solid #D8E4DE; background: #FFFFFF; box-sizing: border-box;
+  }
+  .radio-dot.on { border-color: #3FA98F; background: #3FA98F; box-shadow: inset 0 0 0 4px #FFFFFF; }
+
+  /* ===== 首次引导弹层 ===== */
+  .guide-mask {
+    position: absolute; inset: 0; z-index: 70;
+    display: none; align-items: center; justify-content: center;
+    padding: 0 26px; background: rgba(24, 38, 32, 0.45);
+  }
+  .guide-mask.show { display: flex; }
+  .guide-card {
+    width: 100%; padding: 22px 18px 16px; border-radius: 18px;
+    background: #FFFFFF; box-shadow: 0 20px 60px rgba(31, 46, 40, 0.18);
+    box-sizing: border-box;
+  }
+  .guide-title { display: block; font-size: 17px; font-weight: 700; color: var(--text-main); }
+  .guide-sub { display: block; margin-top: 6px; font-size: 12px; color: var(--text-muted); }
+  .guide-option {
+    display: flex; align-items: center; justify-content: space-between; width: 100%;
+    margin-top: 12px; padding: 13px 14px; border-radius: 12px;
+    background: #F7FAF8; border: 1px solid #EDF3EF; text-align: left;
+  }
+  .guide-option-main { display: flex; flex-direction: column; }
+  .guide-option-title { font-size: 14px; font-weight: 600; color: var(--text-main); }
+  .guide-option-desc { margin-top: 4px; font-size: 11.5px; color: var(--text-faint); }
+  .guide-badge {
+    font-size: 10.5px; color: #3FA98F; padding: 2px 8px;
+    border-radius: 999px; background: #E8F5F0;
+  }
+  .guide-badge.on { background: #3FA98F; color: #FFFFFF; }
+  .guide-skip { display: block; margin-top: 14px; text-align: center; font-size: 12px; color: var(--text-faint); }
 
   /* ===== 倒计时页（专注 / 休息） ===== */
   .page.mode-focus { background: linear-gradient(180deg, #F0F7F3 0%, #E6F2EC 100%); }
@@ -284,17 +295,6 @@
   }
   .vibrate-pill.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* ===== Toast ===== */
-  .mp-toast {
-    position: absolute; left: 50%; top: 42%; transform: translateX(-50%) scale(0.9);
-    background: rgba(31, 46, 40, 0.88); color: #FFFFFF;
-    border-radius: 12px; padding: 16px 22px; text-align: center;
-    opacity: 0; pointer-events: none; z-index: 70; min-width: 120px;
-    transition: opacity var(--transition-normal), transform var(--transition-normal);
-  }
-  .mp-toast.show { opacity: 1; transform: translateX(-50%) scale(1); }
-  .mp-toast .toast-text { display: block; margin-top: 6px; font-size: 13px; }
-
   /* ===== 选择器（底部弹层） ===== */
   .picker-mask {
     position: absolute; inset: 0; z-index: 50;
@@ -330,11 +330,6 @@
 </head>
 <body>
 
-<header class="top-bar">
-  <div class="title">护眼循环闹钟 · 可点击原型</div>
-  <div class="tag">静态假数据 · 未接云数据</div>
-</header>
-
 <main class="stage">
 
   <!-- ================= 手机壳 ================= -->
@@ -368,6 +363,7 @@
           </div>
 
           <div class="page-body">
+            <button class="settings-entry" type="button" onclick="onOpenSettings()">设置</button>
             <div class="hero">
               <div class="hero-badge"></div>
               <div class="hero-title">护眼循环闹钟</div>
@@ -387,6 +383,7 @@
             </div>
 
             <button class="btn-primary-lg" type="button" onclick="onStartTimer()">开始计时</button>
+            <button class="btn-ghost btn-break" type="button" onclick="onQuickBreak()">临时休息</button>
 
             <div class="card stats-card">
               <div class="card-title-row">
@@ -394,13 +391,56 @@
                 <span class="card-date" id="todayDate">2026-10-28</span>
               </div>
               <div class="stats-grid">
-                <div class="stat"><span class="stat-num" id="statMinutes">125</span><span class="stat-label">专注分钟</span></div>
-                <div class="stat"><span class="stat-num" id="statCycles">4</span><span class="stat-label">完成循环</span></div>
-                <div class="stat"><span class="stat-num" id="statRest">4</span><span class="stat-label">休息次数</span></div>
+                <div class="stat"><span class="stat-num" id="statMinutes">0</span><span class="stat-label">专注分钟</span></div>
+                <div class="stat"><span class="stat-num" id="statRestMin">0</span><span class="stat-label">休息分钟</span></div>
+                <div class="stat"><span class="stat-num" id="statCycles">0</span><span class="stat-label">完成循环</span></div>
               </div>
             </div>
 
             <div class="rule-tip">20-20-20 法则：每 20 分钟，远眺 20 英尺（约 6 米）外，持续 20 秒。</div>
+          </div>
+        </section>
+
+        <!-- ============ 页面 4：提醒设置 ============ -->
+        <section class="page mode-settings" id="page-settings" aria-label="提醒设置">
+          <div class="mp-navbar">
+            <button class="nav-back" type="button" onclick="onCloseSettings()" aria-label="返回">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F2E28" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <div class="nav-title">提醒设置</div>
+            <div class="mp-capsule" aria-hidden="true">
+              <button class="cap-half" tabindex="-1" type="button">
+                <svg width="20" height="4" viewBox="0 0 20 4" fill="#1F2E28"><circle cx="2.5" cy="2" r="1.8"/><circle cx="10" cy="2" r="1.8"/><circle cx="17.5" cy="2" r="1.8"/></svg>
+              </button>
+              <div class="cap-divider"></div>
+              <button class="cap-half" tabindex="-1" type="button">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#1F2E28" stroke-width="1.4"><circle cx="8" cy="8" r="6.2"/><circle cx="8" cy="8" r="2.1" fill="#1F2E28" stroke="none"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="page-body">
+            <div class="settings-tip">倒计时结束时，用下面的方式提醒你</div>
+
+            <div class="card settings-card">
+              <button class="setting-option" type="button" onclick="pickAlertMode('vibrate')">
+                <span class="setting-option-main">
+                  <span class="setting-option-title">震动提醒</span>
+                  <span class="setting-option-desc">持续震动，直到你点击按钮</span>
+                </span>
+                <span class="radio-dot" id="radioVibrate"></span>
+              </button>
+              <div class="divider"></div>
+              <button class="setting-option" type="button" onclick="pickAlertMode('sound')">
+                <span class="setting-option-main">
+                  <span class="setting-option-title">铃声提醒</span>
+                  <span class="setting-option-desc">持续响铃，直到你点击按钮</span>
+                </span>
+                <span class="radio-dot" id="radioSound"></span>
+              </button>
+            </div>
+
+            <div class="rule-tip">手机处于静音或勿扰模式时，系统可能屏蔽铃声，需要稳定提醒时可切回震动。</div>
           </div>
         </section>
 
@@ -508,12 +548,75 @@
           </div>
         </section>
 
-        <!-- 震动提示 / Toast / 选择器 -->
-        <div class="vibrate-pill" id="vibratePill">已触发震动提醒（真机为 wx.vibrateLong）</div>
-        <div class="mp-toast" id="mpToast" role="status">
-          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="13" r="11" stroke-opacity="0.9"/><path d="m8 13.5 3.4 3.4L18.5 9.5"/></svg>
-          <span class="toast-text" id="toastText">时间已确认</span>
+        <!-- ============ 页面 4：临时休息 ============ -->
+        <section class="page mode-rest" id="page-break" aria-label="临时休息">
+          <div class="mp-navbar">
+            <div class="nav-title">临时休息</div>
+            <div class="mp-capsule" aria-hidden="true">
+              <button class="cap-half" tabindex="-1" type="button">
+                <svg width="20" height="4" viewBox="0 0 20 4" fill="#1F2E28"><circle cx="2.5" cy="2" r="1.8"/><circle cx="10" cy="2" r="1.8"/><circle cx="17.5" cy="2" r="1.8"/></svg>
+              </button>
+              <div class="cap-divider"></div>
+              <button class="cap-half" tabindex="-1" type="button">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#1F2E28" stroke-width="1.4"><circle cx="8" cy="8" r="6.2"/><circle cx="8" cy="8" r="2.1" fill="#1F2E28" stroke="none"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="timer-body">
+            <div class="state-head">
+              <span class="state-label" id="breakLabel">临时休息</span>
+              <span class="state-tip" id="breakTip">远眺约 6 米外，多眨眨眼</span>
+            </div>
+
+            <div class="ring-wrap">
+              <svg viewBox="0 0 200 200" aria-hidden="true">
+                <circle class="ring-track" cx="100" cy="100" r="88" fill="none" stroke-width="8"/>
+                <circle class="ring-progress" id="ringBreak" cx="100" cy="100" r="88" fill="none" stroke-width="8"
+                        stroke-linecap="round" stroke-dasharray="552.9" stroke-dashoffset="0"
+                        transform="rotate(-90 100 100)"/>
+              </svg>
+              <div class="ring-center">
+                <span class="time-text" id="timeBreak">00:20</span>
+                <span class="time-sub" id="subBreak">休息剩余</span>
+              </div>
+            </div>
+
+            <div class="timer-actions">
+              <div class="action-group" id="breakActions">
+                <button class="btn-ghost" type="button" onclick="onEndBreak()">结束休息</button>
+              </div>
+              <div class="action-group" id="breakActionsDone" hidden>
+                <button class="btn-violet" type="button" onclick="onStopBreak()">停止休息</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 首次引导：选择提醒方式（只出现一次） -->
+        <div class="guide-mask" id="guideMask">
+          <div class="guide-card">
+            <span class="guide-title">选择提醒方式</span>
+            <span class="guide-sub">倒计时结束时，用哪种方式提醒你？</span>
+            <button class="guide-option" type="button" onclick="pickAlertMode('vibrate')">
+              <span class="guide-option-main">
+                <span class="guide-option-title">震动提醒</span>
+                <span class="guide-option-desc">持续震动，直到你点击按钮</span>
+              </span>
+              <span class="guide-badge" id="guideBadge">默认</span>
+            </button>
+            <button class="guide-option" type="button" onclick="pickAlertMode('sound')">
+              <span class="guide-option-main">
+                <span class="guide-option-title">铃声提醒</span>
+                <span class="guide-option-desc">持续响铃，直到你点击按钮</span>
+              </span>
+            </button>
+            <span class="guide-skip" onclick="dismissGuide()">以后再说</span>
+          </div>
         </div>
+
+        <!-- 震动提示 / 选择器 -->
+        <div class="vibrate-pill" id="vibratePill">已触发震动提醒</div>
         <div class="picker-mask" id="pickerMask" onclick="closePicker()"></div>
         <div class="picker-sheet" id="pickerSheet" role="dialog" aria-modal="true">
           <div class="picker-head">
@@ -527,44 +630,6 @@
       </div>
     </div>
   </div>
-
-  <!-- ================= 右侧说明面板 ================= -->
-  <aside class="side-panel">
-    <div class="panel-card">
-      <h2>页面与最短路径对照</h2>
-      <div class="flow-row">
-        <span class="flow-badge">页面 1</span>
-        <span class="flow-text"><b>首页（时间设置）</b> — 最短路径步骤 1：调节提醒/休息时长，点击「开始计时」进入循环。</span>
-      </div>
-      <div class="flow-row">
-        <span class="flow-badge">页面 2</span>
-        <span class="flow-text"><b>专注倒计时</b> — 步骤 2：默认 20 分钟倒计时；步骤 3：倒计时结束震动提醒，点击「开始休息」。</span>
-      </div>
-      <div class="flow-row">
-        <span class="flow-badge">页面 3</span>
-        <span class="flow-text"><b>休息倒计时</b> — 步骤 4：默认 20 秒休息倒计时，结束后震动，点击「自动开启下一循环」。</span>
-      </div>
-      <div class="flow-row">
-        <span class="flow-badge">步骤 5</span>
-        <span class="flow-text"><b>结束提醒</b> 按钮常驻页面 2 / 3 底部，点击直接返回首页（页面 1）。</span>
-      </div>
-    </div>
-
-    <div class="panel-card">
-      <h2>演示辅助（非产品功能）</h2>
-      <div class="demo-row">
-        <button class="demo-btn primary" type="button" onclick="jumpTo('page-home')">直达 · 首页</button>
-        <button class="demo-btn primary" type="button" onclick="jumpTo('page-focus')">直达 · 专注页</button>
-        <button class="demo-btn primary" type="button" onclick="jumpTo('page-rest')">直达 · 休息页</button>
-        <button class="demo-btn" type="button" onclick="fastForward()">快进到倒计时结束</button>
-        <button class="demo-btn" type="button" onclick="resetPrototype()">重置原型</button>
-      </div>
-      <p class="demo-note">
-        震动以手机晃动动画模拟，真机为 wx.vibrateLong 连续 3 次；「快进」用于评审时跳过等待。
-        数据为静态假数据（今日专注 125 分钟 / 4 轮 / 休息 4 次），演示中完成循环会即时累加，仅为 UI 展示。
-      </p>
-    </div>
-  </aside>
 </main>
 
 <script>
@@ -572,20 +637,23 @@
   'use strict';
 
   var MINUTES = [5, 10, 15, 20, 25, 30, 40, 45, 60];
-  var SECONDS = [10, 15, 20, 30, 45, 60];
-  var INITIAL_STATS = { focusMinutes: 125, cycles: 4, restCount: 4 };
+  var SECONDS = [10, 15, 20, 30, 45, 60, 120, 180, 240, 300, 360, 420, 480, 540, 600];
   var RING_CIRCUM = 552.9;
 
+  function restLabel(seconds) {
+    return seconds < 60 ? seconds + ' 秒' : (seconds / 60) + ' 分钟';
+  }
+
   var settings = { minutes: 20, seconds: 20 };
-  var stats = { focusMinutes: 125, cycles: 4, restCount: 4 };
+  var stats = { focusMinutes: 0, cycles: 0, restCount: 0, restSeconds: 0 };
   var session = { cycles: 0, minutes: 0 };
 
   var currentScreen = 'page-home';
   var timerId = null;
   var endTime = 0;
   var duration = 0;
-  var mode = 'focus'; // focus | focusDone | rest | restDone
-  var pickerType = null;
+  var mode = 'focus'; // focus | focusDone | rest | restDone | break | breakDone
+  var breakStartAt = 0;
 
   var FOCUS_TEXT = {
     focus: { label: '专注中', tip: '倒计时结束会震动提醒你', sub: '距下次休息' },
@@ -618,6 +686,7 @@
     var from = $(currentScreen);
     if (!to || to === from) return;
     stopTimer();
+    stopVibrate();
     if (dir === 'pop') {
       // 目标页立即置底常驻显示（无动画），当前页滑出后仅隐藏当前页
       to.classList.add('instant', 'active');
@@ -634,24 +703,6 @@
     }
     currentScreen = toId;
   };
-
-  function jumpTo(toId) {
-    stopTimer();
-    ['page-home', 'page-focus', 'page-rest'].forEach(function (id) {
-      var p = $(id);
-      p.classList.remove('active', 'leaving', 'under');
-    });
-    var to = $(toId);
-    to.classList.add('instant');
-    to.classList.add('active');
-    void to.offsetWidth; // 触发 reflow，避免残留过渡
-    to.classList.remove('instant');
-    currentScreen = toId;
-
-    if (toId === 'page-focus') startFocus();
-    else if (toId === 'page-rest') startRest();
-  }
-  window.jumpTo = jumpTo;
 
   /* ===== 倒计时状态机 ===== */
   function stopTimer() {
@@ -671,8 +722,14 @@
   }
 
   function setCountdownUI(remain, progress) {
-    var timeEl = mode === 'focus' || mode === 'focusDone' ? $('timeFocus') : $('timeRest');
-    var ringEl = mode === 'focus' || mode === 'focusDone' ? $('ringFocus') : $('ringRest');
+    var timeEl, ringEl;
+    if (mode === 'break' || mode === 'breakDone') {
+      timeEl = $('timeBreak'); ringEl = $('ringBreak');
+    } else if (mode === 'focus' || mode === 'focusDone') {
+      timeEl = $('timeFocus'); ringEl = $('ringFocus');
+    } else {
+      timeEl = $('timeRest'); ringEl = $('ringRest');
+    }
     timeEl.textContent = fmt(remain);
     ringEl.setAttribute('stroke-dashoffset', (RING_CIRCUM * (1 - Math.max(0, Math.min(1, progress)))).toFixed(1));
   }
@@ -725,7 +782,7 @@
       $('focusActionsDone').hidden = false;
       $('timeFocus').textContent = '00:00';
       setRingFull('ringFocus');
-      simulateVibrate();
+      startVibrate();
     } else if (mode === 'rest') {
       mode = 'restDone';
       stats.restCount += 1;
@@ -735,8 +792,34 @@
       $('restActionsDone').hidden = false;
       $('timeRest').textContent = '00:00';
       setRingFull('ringRest');
-      simulateVibrate();
+      startVibrate();
+    } else if (mode === 'break') {
+      // 临时休息自然结束：记录 → 完成提醒 → 停留在完成状态，等待用户手动停止
+      mode = 'breakDone';
+      recordBreak(Date.now());
+      renderStats();
+      applyPageState('page-break', 'mode-restDone', 'mode-rest', null);
+      $('breakLabel').textContent = '休息完成';
+      $('breakTip').textContent = '休息完成，记得继续加油';
+      $('subBreak').textContent = '本次休息完成';
+      $('breakActions').hidden = true;
+      $('breakActionsDone').hidden = false;
+      $('timeBreak').textContent = '00:00';
+      setRingFull('ringBreak');
+      startVibrate();
     }
+  }
+
+  /* ===== 临时休息 ===== */
+  function recordBreak(endAt) {
+    var secs = Math.max(1, Math.round((endAt - breakStartAt) / 1000));
+    stats.restCount += 1;
+    stats.restSeconds += secs;
+    return secs;
+  }
+
+  function endBreakBack() {
+    navigate('page-home', 'pop');
   }
 
   /* ===== 交互动作 ===== */
@@ -752,6 +835,40 @@
     startRest();
   };
 
+  window.onQuickBreak = function () {
+    navigate('page-break', 'push');
+    startBreak();
+  };
+
+  function startBreak() {
+    mode = 'break';
+    breakStartAt = Date.now();
+    duration = settings.seconds * 1000;
+    endTime = Date.now() + duration;
+    applyPageState('page-break', 'mode-rest', 'mode-restDone', null);
+    $('breakLabel').textContent = '临时休息';
+    $('breakTip').textContent = '远眺约 6 米外，多眨眨眼';
+    $('subBreak').textContent = '休息剩余';
+    $('breakActions').hidden = false;
+    $('breakActionsDone').hidden = true;
+    setRingFull('ringBreak');
+    $('timeBreak').textContent = fmt(duration);
+    startTicking();
+  }
+
+  window.onEndBreak = function () {
+    if (mode !== 'break') return;
+    mode = 'breakDone';
+    recordBreak(Date.now());
+    renderStats();
+    endBreakBack();
+  };
+
+  window.onStopBreak = function () {
+    if (mode !== 'breakDone') return;
+    endBreakBack();
+  };
+
   window.onNextCycle = function () {
     navigate('page-focus', 'pop');
     startFocus();
@@ -763,7 +880,6 @@
 
   /* ===== 选择器 ===== */
   window.openPicker = function (type) {
-    pickerType = type;
     var isMinutes = type === 'minutes';
     var values = isMinutes ? MINUTES : SECONDS;
     var current = isMinutes ? settings.minutes : settings.seconds;
@@ -774,10 +890,10 @@
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'picker-option' + (v === current ? ' selected' : '');
-      btn.textContent = isMinutes ? v + ' 分钟' : v + ' 秒';
+      btn.textContent = isMinutes ? v + ' 分钟' : restLabel(v);
       btn.onclick = function () {
         if (isMinutes) { settings.minutes = v; $('minutesValue').textContent = v + ' 分钟'; }
-        else { settings.seconds = v; $('secondsValue').textContent = v + ' 秒'; }
+        else { settings.seconds = v; $('secondsValue').textContent = restLabel(v); }
         closePicker();
       };
       box.appendChild(btn);
@@ -789,34 +905,13 @@
   window.closePicker = function () {
     $('pickerMask').classList.remove('show');
     $('pickerSheet').classList.remove('show');
-    pickerType = null;
-  };
-
-  /* ===== 演示辅助 ===== */
-  window.fastForward = function () {
-    if (!timerId) return;
-    endTime = Date.now();
-    tick();
-  };
-
-  window.resetPrototype = function () {
-    settings = { minutes: 20, seconds: 20 };
-    stats = { focusMinutes: INITIAL_STATS.focusMinutes, cycles: INITIAL_STATS.cycles, restCount: INITIAL_STATS.restCount };
-    session = { cycles: 0, minutes: 0 };
-    $('minutesValue').textContent = '20 分钟';
-    $('secondsValue').textContent = '20 秒';
-    closePicker();
-    jumpTo('page-home');
-    renderStats();
-    renderSession();
-    showToast('原型已重置');
   };
 
   /* ===== 渲染 ===== */
   function renderStats() {
     $('statMinutes').textContent = stats.focusMinutes;
     $('statCycles').textContent = stats.cycles;
-    $('statRest').textContent = stats.restCount;
+    $('statRestMin').textContent = Math.round(stats.restSeconds / 6) / 10;
   }
 
   function renderSession() {
@@ -830,28 +925,138 @@
     r.hidden = !has;
   }
 
-  var pillTimer = null;
-  function simulateVibrate() {
-    var phone = $('phone');
-    phone.classList.remove('shake');
-    void phone.offsetWidth;
-    phone.classList.add('shake');
-    var pill = $('vibratePill');
-    pill.classList.add('show');
-    if (pillTimer) clearTimeout(pillTimer);
-    pillTimer = setTimeout(function () { pill.classList.remove('show'); }, 2000);
+  /* ===== 提醒方式（震动 / 铃声）：本地缓存持久化，默认震动 ===== */
+  var ALERT_KEY = 'huyan_alert_mode';
+  var GUIDE_KEY = 'huyan_alert_guide_shown';
+  var alertMode = localStorage.getItem(ALERT_KEY) === 'sound' ? 'sound' : 'vibrate';
+  var audioCtx = null;
+  var soundTimer = null;
+  var beepTimer = null;
+  var liveOsc = [];
+
+  function beep(freq) {
+    if (!audioCtx) return;
+    try {
+      var osc = audioCtx.createOscillator();
+      var gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.value = 0.06;
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.onended = function () {
+        var i = liveOsc.indexOf(osc);
+        if (i !== -1) liveOsc.splice(i, 1);
+      };
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.22);
+      liveOsc.push(osc);
+    } catch (e) { }
   }
 
-  var toastTimer = null;
-  function showToast(text) {
-    $('toastText').textContent = text;
-    var t = $('mpToast');
-    t.classList.add('show');
-    if (toastTimer) clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () { t.classList.remove('show'); }, 1500);
+  function soundCycle() {
+    beep(880);
+    beepTimer = setTimeout(function () { beep(660); }, 260);
   }
+
+  function startSound() {
+    stopSound(); // 重复 start 前先停，避免 setInterval 与振荡器叠加
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    } catch (e) {
+      return false;
+    }
+    soundCycle();
+    soundTimer = setInterval(soundCycle, 1300);
+    return true;
+  }
+
+  function stopSound() {
+    if (beepTimer) {
+      clearTimeout(beepTimer);
+      beepTimer = null;
+    }
+    if (soundTimer) {
+      clearInterval(soundTimer);
+      soundTimer = null;
+    }
+    // 已在发声的振荡器立即停掉，避免 stop 后还有尾音
+    liveOsc.forEach(function (o) {
+      try { o.stop(0); } catch (e) { }
+    });
+    liveOsc = [];
+    if (audioCtx && audioCtx.suspend && audioCtx.state === 'running') {
+      try { audioCtx.suspend(); } catch (e) { }
+    }
+  }
+
+  /* 提醒开始：按当前提醒方式分发，持续到 stopVibrate() 被调用 */
+  function startVibrate() {
+    stopVibrate();
+    if (alertMode === 'sound') {
+      startSound();
+      $('vibratePill').textContent = '正在响铃提醒';
+    } else {
+      $('phone').classList.add('shake');
+      $('vibratePill').textContent = '已触发震动提醒';
+    }
+    $('vibratePill').classList.add('show');
+  }
+
+  function stopVibrate() {
+    stopSound();
+    $('phone').classList.remove('shake');
+    $('vibratePill').classList.remove('show');
+  }
+
+  /* 兜底：页面不可见 / 窗口失焦 / 页面隐藏或卸载时立即停止铃声与晃动，避免切走后继续响 */
+  function stopAlertOnLeave() {
+    stopVibrate();
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) stopAlertOnLeave();
+  });
+  window.addEventListener('blur', stopAlertOnLeave);
+  window.addEventListener('pagehide', stopAlertOnLeave);
+  window.addEventListener('beforeunload', stopAlertOnLeave);
+
+  /* ===== 提醒设置页 ===== */
+  function renderAlertSetting() {
+    var v = $('radioVibrate');
+    var s = $('radioSound');
+    if (v) v.classList.toggle('on', alertMode === 'vibrate');
+    if (s) s.classList.toggle('on', alertMode === 'sound');
+    var badge = $('guideBadge');
+    if (badge) badge.classList.toggle('on', alertMode === 'vibrate');
+  }
+
+  window.onOpenSettings = function () {
+    renderAlertSetting();
+    navigate('page-settings');
+  };
+
+  window.onCloseSettings = function () {
+    navigate('page-home', 'pop');
+  };
+
+  window.pickAlertMode = function (mode) {
+    alertMode = mode === 'sound' ? 'sound' : 'vibrate';
+    localStorage.setItem(ALERT_KEY, alertMode);
+    localStorage.setItem(GUIDE_KEY, '1');
+    renderAlertSetting();
+    $('guideMask').classList.remove('show');
+  };
+
+  window.dismissGuide = function () {
+    localStorage.setItem(GUIDE_KEY, '1');
+    $('guideMask').classList.remove('show');
+  };
 
   /* ===== 初始化 ===== */
+  renderAlertSetting();
+  // 首次进入才引导选择提醒方式，选过或跳过都不再出现
+  if (localStorage.getItem(GUIDE_KEY) !== '1') $('guideMask').classList.add('show');
   $('todayDate').textContent = todayStr();
   renderStats();
   renderSession();
